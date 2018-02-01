@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Constant.h"
 #include "PiCalculator.h"
 
 using namespace std;
