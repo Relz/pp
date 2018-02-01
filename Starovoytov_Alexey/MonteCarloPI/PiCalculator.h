@@ -1,4 +1,6 @@
 #pragma once
+#include <ctime>
+#include <stdlib.h>
 
 class PiCalculator
 {
@@ -15,5 +17,11 @@ private:
 	size_t m_threadCount;
 
 	double m_piValue;
+
+	void InitRandomizer() const;
+	size_t GetInCirclePointCount() const;
+	bool IsPointInCircle(double x, double y) const;
+	double GetRandomCoordinateInQuarter() const;
+	double GetRandomCoefficient() const;
 };
 

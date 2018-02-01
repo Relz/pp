@@ -10,5 +10,9 @@ int main(int argc, char *argv[])
 
 	PiCalculator piCalculator(iterationCount, threadCount);
 
+	piCalculator.Calculate();
+
+	cout << "PI: " << piCalculator.GetPiValue() << endl;
+
 	return EXIT_SUCCESS;
 }
