@@ -10,3 +10,8 @@ double PiCalculator::GetPiValue() const
 {
 	return m_piValue;
 }
+
+void PiCalculator::Calculate()
+{
+	m_piValue = 0;
+}
