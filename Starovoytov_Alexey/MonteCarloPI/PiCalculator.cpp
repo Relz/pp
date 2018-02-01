@@ -5,3 +5,8 @@ PiCalculator::PiCalculator(size_t iterationCount, size_t threadCount)
 	, m_threadCount(threadCount)
 {
 }
+
+double PiCalculator::GetPiValue() const
+{
+	return m_piValue;
+}

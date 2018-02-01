@@ -10,5 +10,7 @@ private:
 
 	size_t m_iterationCount;
 	size_t m_threadCount;
+
+	double m_piValue;
 };
 
