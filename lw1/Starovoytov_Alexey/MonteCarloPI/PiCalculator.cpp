@@ -19,10 +19,11 @@ void PiCalculator::Calculate()
 unsigned int PiCalculator::GetInCirclePointCount() const
 {
 	ThreadPool threadPool;
-	ProgressData *progressData = new ProgressData({ new unsigned int(0), m_iterationCount });
-	threadPool.Add(PrintProgress, progressData);
+	shared_ptr<ProgressData> progressData = make_shared<ProgressData>(ProgressData({ make_shared<unsigned int>(0), m_iterationCount }));
+	threadPool.Add(PrintProgress, progressData.get());
 
-	unsigned int *inCirclePointCount = new unsigned int();
+	vector<shared_ptr<PiCalculatorData>> piCalculatorDataPointers;
+	shared_ptr<unsigned int> inCirclePointCount = make_shared<unsigned int>(0);
 	unsigned int rest = m_iterationCount % m_threadCount;
 	for (unsigned int i = 0; i < m_threadCount; ++i)
 	{
@@ -32,8 +33,9 @@ unsigned int PiCalculator::GetInCirclePointCount() const
 			++threadIterationCount;
 			--rest;
 		}
-		PiCalculatorData *piCalculatorData = new PiCalculatorData({ inCirclePointCount, threadIterationCount, progressData });
-		threadPool.Add(CalculateInCirclePointCount, piCalculatorData), inCirclePointCount;
+		shared_ptr<PiCalculatorData> piCalculatorData = make_shared<PiCalculatorData>(PiCalculatorData({ inCirclePointCount, threadIterationCount, progressData }));
+		threadPool.Add(CalculateInCirclePointCount, piCalculatorData.get());
+		piCalculatorDataPointers.emplace_back(piCalculatorData);
 	}
 
 	threadPool.Wait();
@@ -63,9 +65,9 @@ DWORD WINAPI PiCalculator::CalculateInCirclePointCount(CONST LPVOID data)
 	{
 		if (IsPointInCircle(randomHelper.GetRandomVector2d(0, RADIUS)))
 		{
-			InterlockedIncrement(piCalculatorData->inCirclePointCount);
+			InterlockedIncrement(piCalculatorData->inCirclePointCount.get());
 		}
-		InterlockedIncrement(piCalculatorData->progressData->current);
+		InterlockedIncrement(piCalculatorData->progressData->current.get());
 	}
 	return 0;
 }

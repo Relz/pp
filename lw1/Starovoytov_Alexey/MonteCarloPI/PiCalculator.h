@@ -2,7 +2,7 @@
 #include <iostream>
 #include <windows.h>
 #include <vector>
-#include <unordered_map>
+#include <memory>
 #include "ThreadPool.h"
 #include "RandomHelper.h"
 #include "MathHelper.h"
@@ -12,15 +12,15 @@ using namespace std;
 
 struct ProgressData
 {
-	unsigned int *current;
+	shared_ptr<unsigned int> current;
 	unsigned int total;
 };
 
 struct PiCalculatorData
 {
-	unsigned int *inCirclePointCount;
+	shared_ptr<unsigned int> inCirclePointCount;
 	unsigned int iterationCount;
-	ProgressData *progressData;
+	shared_ptr<ProgressData> progressData;
 };
 
 class PiCalculator
