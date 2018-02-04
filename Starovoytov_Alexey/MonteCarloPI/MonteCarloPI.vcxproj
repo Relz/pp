@@ -117,7 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PiCalculator.h" />
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="ThreadPool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
