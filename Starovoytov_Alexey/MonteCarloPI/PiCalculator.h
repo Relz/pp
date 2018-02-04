@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <vector>
-#include "ThreadHelper.h"
+#include "ThreadPool.h"
 
 using namespace std;
 

@@ -18,9 +18,9 @@ void PiCalculator::Calculate()
 
 unsigned int PiCalculator::GetInCirclePointCount() const
 {
+	ThreadPool threadPool;
 	ProgressData *progressData = new ProgressData({ 0, m_iterationCount });
-	vector<HANDLE> threadHandles;
-	threadHandles.emplace_back(ThreadHelper::CreateSimpleThread((LPTHREAD_START_ROUTINE)PrintProgress, progressData));
+	threadPool.Add((LPTHREAD_START_ROUTINE)PrintProgress, progressData);
 	InitRandomizer();
 	unsigned int result = 0;
 	for (unsigned int i = 0; i < m_iterationCount; ++i)
@@ -33,8 +33,9 @@ unsigned int PiCalculator::GetInCirclePointCount() const
 		}
 		progressData->current = i + 1;
 	}
-	ThreadHelper::WaitThreads(threadHandles);
-	ThreadHelper::CloseThreads(threadHandles);
+	threadPool.Wait();
+	threadPool.Close();
+	cout << endl;
 	return result;
 }
 
