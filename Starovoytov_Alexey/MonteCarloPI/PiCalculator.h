@@ -1,10 +1,10 @@
 #pragma once
 #include <iostream>
-#include <ctime>
-#include <stdlib.h>
 #include <windows.h>
 #include <vector>
 #include "ThreadPool.h"
+#include "RandomHelper.h"
+#include "RoundHelper.h"
 
 using namespace std;
 
@@ -32,10 +32,7 @@ private:
 	double m_piValue;
 
 	unsigned int GetInCirclePointCount() const;
-	void InitRandomizer() const;
-	double GetRandomCoordinateInQuarter() const;
-	double GetRandomCoefficient() const;
-	bool IsPointInCircle(double x, double y) const;
+	bool IsPointInCircle(Vector2d const& vect) const;
 
 	static DWORD WINAPI PrintProgress(CONST LPVOID lpParam);
 };

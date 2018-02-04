@@ -21,13 +21,12 @@ unsigned int PiCalculator::GetInCirclePointCount() const
 	ThreadPool threadPool;
 	ProgressData *progressData = new ProgressData({ 0, m_iterationCount });
 	threadPool.Add((LPTHREAD_START_ROUTINE)PrintProgress, progressData);
-	InitRandomizer();
+	RandomHelper randomHelper;
 	unsigned int result = 0;
 	for (unsigned int i = 0; i < m_iterationCount; ++i)
 	{
-		double randomX = GetRandomCoordinateInQuarter();
-		double randomY = GetRandomCoordinateInQuarter();
-		if (IsPointInCircle(randomX, randomY))
+		
+		if (IsPointInCircle(randomHelper.GetRandomVector2d(0, RADIUS)))
 		{
 			++result;
 		}
@@ -39,24 +38,9 @@ unsigned int PiCalculator::GetInCirclePointCount() const
 	return result;
 }
 
-void PiCalculator::InitRandomizer() const
+bool PiCalculator::IsPointInCircle(Vector2d const& vect) const
 {
-	srand(static_cast<unsigned int>(time(0)));
-}
-
-double PiCalculator::GetRandomCoordinateInQuarter() const
-{
-	return GetRandomCoefficient() * RADIUS;
-}
-
-double PiCalculator::GetRandomCoefficient() const
-{
-	return static_cast<double>(rand()) / RAND_MAX;
-}
-
-bool PiCalculator::IsPointInCircle(double x, double y) const
-{
-	return x * x + y * y <= RADIUS * RADIUS;
+	return vect.GetU() * vect.GetU() + vect.GetV() * vect.GetV() <= RADIUS * RADIUS;
 }
 
 DWORD WINAPI PiCalculator::PrintProgress(CONST LPVOID lpParam)
@@ -65,7 +49,7 @@ DWORD WINAPI PiCalculator::PrintProgress(CONST LPVOID lpParam)
 	double progress = 0;
 	while (progress != 100)
 	{
-		progress = static_cast<double>(progressData->current) / progressData->total * 100;
+		progress = RoundHelper::Round2(static_cast<double>(progressData->current) / progressData->total * 100);
 		cout << "Progress: [" << progress << "% / 100%]   \r";
 		Sleep(PROGRESS_BAR_UPDATE_DURATION);
 	}
