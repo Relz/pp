@@ -17,5 +17,5 @@ void RandomHelper::InitRandomizer() const
 
 double RandomHelper::GetRandom(double from, double to) const
 {
-	return static_cast<double>(rand()) / RAND_MAX * to + from;
+	return static_cast<double>(rand()) / RAND_MAX * (to - from) + from;
 }
