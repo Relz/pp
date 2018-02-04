@@ -12,4 +12,3 @@ private:
 	void InitRandomizer() const;
 	double GetRandom(double from, double to) const;
 };
-

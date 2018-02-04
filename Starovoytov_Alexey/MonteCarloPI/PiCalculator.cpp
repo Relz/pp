@@ -19,39 +19,58 @@ void PiCalculator::Calculate()
 unsigned int PiCalculator::GetInCirclePointCount() const
 {
 	ThreadPool threadPool;
-	ProgressData *progressData = new ProgressData({ 0, m_iterationCount });
-	threadPool.Add((LPTHREAD_START_ROUTINE)PrintProgress, progressData);
-	RandomHelper randomHelper;
-	unsigned int result = 0;
-	for (unsigned int i = 0; i < m_iterationCount; ++i)
+	ProgressData *progressData = new ProgressData({ new unsigned int(0), m_iterationCount });
+	threadPool.Add(PrintProgress, progressData);
+
+	unsigned int *inCirclePointCount = new unsigned int();
+	unsigned int rest = m_iterationCount % m_threadCount;
+	for (unsigned int i = 0; i < m_threadCount; ++i)
 	{
-		
-		if (IsPointInCircle(randomHelper.GetRandomVector2d(0, RADIUS)))
+		unsigned int threadIterationCount = m_iterationCount / m_threadCount;
+		if (rest != 0)
 		{
-			++result;
+			++threadIterationCount;
+			--rest;
 		}
-		progressData->current = i + 1;
+		PiCalculatorData *piCalculatorData = new PiCalculatorData({ inCirclePointCount, threadIterationCount, progressData });
+		threadPool.Add(CalculateInCirclePointCount, piCalculatorData), inCirclePointCount;
 	}
+
 	threadPool.Wait();
 	threadPool.Close();
 	cout << endl;
-	return result;
+	return *inCirclePointCount;
 }
 
-bool PiCalculator::IsPointInCircle(Vector2d const& vect) const
+DWORD WINAPI PiCalculator::PrintProgress(CONST LPVOID data)
 {
-	return vect.GetU() * vect.GetU() + vect.GetV() * vect.GetV() <= RADIUS * RADIUS;
-}
-
-DWORD WINAPI PiCalculator::PrintProgress(CONST LPVOID lpParam)
-{
-	ProgressData *progressData = (ProgressData*)lpParam;
+	ProgressData *progressData = (ProgressData*)data;
 	double progress = 0;
-	while (progress != 100)
+	while (!DoubleHelper::AreEqual(progress, 100))
 	{
-		progress = RoundHelper::Round2(static_cast<double>(progressData->current) / progressData->total * 100);
-		cout << "Progress: [" << progress << "% / 100%]   \r";
+		progress = static_cast<double>(*progressData->current) / progressData->total * 100;
+		cout << "Progress: [" << MathHelper::Round<2>(progress) << "% / 100%]   \r";
 		Sleep(PROGRESS_BAR_UPDATE_DURATION);
 	}
 	return 0;
+}
+
+DWORD WINAPI PiCalculator::CalculateInCirclePointCount(CONST LPVOID data)
+{
+	PiCalculatorData *piCalculatorData = (PiCalculatorData*)data;
+	RandomHelper randomHelper;
+	for (unsigned int i = 0; i < piCalculatorData->iterationCount; ++i)
+	{
+		if (IsPointInCircle(randomHelper.GetRandomVector2d(0, RADIUS)))
+		{
+			InterlockedIncrement(piCalculatorData->inCirclePointCount);
+		}
+		InterlockedIncrement(piCalculatorData->progressData->current);
+	}
+	return 0;
+}
+
+bool PiCalculator::IsPointInCircle(Vector2d const& vect)
+{
+	return vect.GetU() * vect.GetU() + vect.GetV() * vect.GetV() <= RADIUS * RADIUS;
 }

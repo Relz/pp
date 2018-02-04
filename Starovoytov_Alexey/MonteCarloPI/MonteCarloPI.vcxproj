@@ -111,17 +111,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DoubleHelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PiCalculator.cpp" />
     <ClCompile Include="RandomHelper.cpp" />
-    <ClCompile Include="RoundHelper.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="Vector2d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DoubleHelper.h" />
     <ClInclude Include="PiCalculator.h" />
     <ClInclude Include="RandomHelper.h" />
-    <ClInclude Include="RoundHelper.h" />
+    <ClInclude Include="MathHelper.h" />
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="Vector2d.h" />
   </ItemGroup>
