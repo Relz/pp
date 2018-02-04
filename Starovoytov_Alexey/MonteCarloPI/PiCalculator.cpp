@@ -1,6 +1,6 @@
 #include "PICalculator.h"
 
-PiCalculator::PiCalculator(size_t iterationCount, size_t threadCount)
+PiCalculator::PiCalculator(unsigned int iterationCount, unsigned int threadCount)
 	: m_iterationCount(iterationCount)
 	, m_threadCount(threadCount)
 {
@@ -16,14 +16,14 @@ void PiCalculator::Calculate()
 	m_piValue = 4.0 * GetInCirclePointCount() / m_iterationCount;
 }
 
-size_t PiCalculator::GetInCirclePointCount() const
+unsigned int PiCalculator::GetInCirclePointCount() const
 {
 	ProgressData *progressData = new ProgressData({ 0, m_iterationCount });
 	vector<HANDLE> threadHandles;
 	threadHandles.emplace_back(ThreadHelper::CreateSimpleThread((LPTHREAD_START_ROUTINE)PrintProgress, progressData));
 	InitRandomizer();
-	size_t result = 0;
-	for (size_t i = 0; i < m_iterationCount; ++i)
+	unsigned int result = 0;
+	for (unsigned int i = 0; i < m_iterationCount; ++i)
 	{
 		double randomX = GetRandomCoordinateInQuarter();
 		double randomY = GetRandomCoordinateInQuarter();
@@ -33,6 +33,7 @@ size_t PiCalculator::GetInCirclePointCount() const
 		}
 		progressData->current = i + 1;
 	}
+	ThreadHelper::WaitThreads(threadHandles);
 	ThreadHelper::CloseThreads(threadHandles);
 	return result;
 }

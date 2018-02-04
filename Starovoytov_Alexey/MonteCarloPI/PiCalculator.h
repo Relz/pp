@@ -10,28 +10,28 @@ using namespace std;
 
 struct ProgressData
 {
-	size_t current;
-	size_t total;
+	unsigned int current;
+	unsigned int total;
 };
 
 class PiCalculator
 {
 public:
-	explicit PiCalculator(size_t iterationCount, size_t threadCount);
+	explicit PiCalculator(unsigned int iterationCount, unsigned int threadCount);
 
 	double GetPiValue() const;
 	void Calculate();
 
 private:
-	static const size_t RADIUS = 1;
-	static const size_t PROGRESS_BAR_UPDATE_DURATION = 1000;
+	static const unsigned int RADIUS = 1;
+	static const unsigned int PROGRESS_BAR_UPDATE_DURATION = 1000;
 
-	size_t m_iterationCount;
-	size_t m_threadCount;
+	unsigned int m_iterationCount;
+	unsigned int m_threadCount;
 
 	double m_piValue;
 
-	size_t GetInCirclePointCount() const;
+	unsigned int GetInCirclePointCount() const;
 	void InitRandomizer() const;
 	double GetRandomCoordinateInQuarter() const;
 	double GetRandomCoefficient() const;

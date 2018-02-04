@@ -12,3 +12,8 @@ void ThreadHelper::CloseThreads(vector<HANDLE> const & threadHandles)
 		CloseHandle(threadHandle);
 	}
 }
+
+void ThreadHelper::WaitThreads(vector<HANDLE> const & threads)
+{
+	WaitForMultipleObjects(threads.size(), threads.data(), TRUE, INFINITE);
+}
