@@ -113,10 +113,12 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PiCalculator.cpp" />
+    <ClCompile Include="ThreadHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PiCalculator.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="ThreadHelper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

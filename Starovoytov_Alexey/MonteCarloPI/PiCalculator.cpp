@@ -20,7 +20,7 @@ size_t PiCalculator::GetInCirclePointCount() const
 {
 	ProgressData *progressData = new ProgressData({ 0, m_iterationCount });
 	vector<HANDLE> threadHandles;
-	threadHandles.emplace_back(CreateSimpleThread((LPTHREAD_START_ROUTINE)PrintProgress, progressData));
+	threadHandles.emplace_back(ThreadHelper::CreateSimpleThread((LPTHREAD_START_ROUTINE)PrintProgress, progressData));
 	InitRandomizer();
 	size_t result = 0;
 	for (size_t i = 0; i < m_iterationCount; ++i)
@@ -33,6 +33,7 @@ size_t PiCalculator::GetInCirclePointCount() const
 		}
 		progressData->current = i + 1;
 	}
+	ThreadHelper::CloseThreads(threadHandles);
 	return result;
 }
 
@@ -54,18 +55,6 @@ double PiCalculator::GetRandomCoefficient() const
 bool PiCalculator::IsPointInCircle(double x, double y) const
 {
 	return x * x + y * y <= RADIUS * RADIUS;
-}
-
-HANDLE PiCalculator::CreateSimpleThread(LPTHREAD_START_ROUTINE threadFunction, LPVOID data)
-{
-	return CreateThread(
-		NULL,
-		(DWORD)NULL,
-		threadFunction,
-		data,
-		(DWORD)NULL,
-		NULL
-	);
 }
 
 DWORD WINAPI PiCalculator::PrintProgress(CONST LPVOID lpParam)

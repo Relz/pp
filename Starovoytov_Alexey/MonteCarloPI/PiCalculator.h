@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <vector>
+#include "ThreadHelper.h"
 
 using namespace std;
 
@@ -36,6 +37,5 @@ private:
 	double GetRandomCoefficient() const;
 	bool IsPointInCircle(double x, double y) const;
 
-	static HANDLE CreateSimpleThread(LPTHREAD_START_ROUTINE threadFunction, LPVOID data);
 	static DWORD WINAPI PrintProgress(CONST LPVOID lpParam);
 };
