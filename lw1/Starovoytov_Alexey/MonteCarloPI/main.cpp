@@ -9,6 +9,7 @@ using namespace std;
 const unsigned int ARGUMENT_COUNT_MIN = 0;
 const unsigned int ITERATION_COUNT_DEFAULT = 10000;
 const unsigned int THREAD_COUNT_DEFAULT = 1;
+const string HELP_FLAG_NAME = "help";
 const string ITEATION_COUNT_ARGUMENT_NAME = "iteration_count";
 const string THREAD_COUNT_ARGUMENT_NAME = "thread_count";
 
@@ -16,7 +17,7 @@ int main(int argc, char* argv[])
 {
 	CliHelper cliHelper({
 		CliArgumentBuilder()
-			.SetName("help")
+			.SetName(HELP_FLAG_NAME)
 			.SetDescription("Shows help")
 			.SetIsRequired(false)
 			.Build(),
@@ -45,7 +46,7 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 	ArgumentsParser argumentsParser(argc, argv);
-	if (argumentsParser.DoesFlagExist("help"))
+	if (argumentsParser.DoesFlagExist(HELP_FLAG_NAME))
 	{
 		cliHelper.ShowHelp();
 		return EXIT_SUCCESS;
