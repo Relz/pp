@@ -55,12 +55,9 @@ int main(int argc, char* argv[])
 	argumentsParser.GetUIntArgument(ITEATION_COUNT_ARGUMENT_NAME, iterationCount);
 	unsigned int threadCount = THREAD_COUNT_DEFAULT;
 	argumentsParser.GetUIntArgument(THREAD_COUNT_ARGUMENT_NAME, threadCount);
-	cout << iterationCount << " " << threadCount << "\n";
 
 	PiCalculator piCalculator(iterationCount, threadCount);
-
 	piCalculator.Calculate();
-
 	cout << "PI: " << piCalculator.GetPiValue() << "\n";
 	return EXIT_SUCCESS;
 }
