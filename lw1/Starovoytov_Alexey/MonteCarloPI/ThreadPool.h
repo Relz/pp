@@ -14,4 +14,3 @@ public:
 private:
 	vector<HANDLE> m_threadHandles;
 };
-

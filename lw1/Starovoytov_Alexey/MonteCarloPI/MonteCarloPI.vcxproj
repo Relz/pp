@@ -111,6 +111,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ArgumentsParser.cpp" />
+    <ClCompile Include="CliArgument.cpp" />
+    <ClCompile Include="CliHelper.cpp" />
     <ClCompile Include="DoubleHelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PiCalculator.cpp" />
@@ -119,6 +122,9 @@
     <ClCompile Include="Vector2d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArgumentsParser.h" />
+    <ClInclude Include="CliArgument.h" />
+    <ClInclude Include="CliHelper.h" />
     <ClInclude Include="DoubleHelper.h" />
     <ClInclude Include="PiCalculator.h" />
     <ClInclude Include="RandomHelper.h" />

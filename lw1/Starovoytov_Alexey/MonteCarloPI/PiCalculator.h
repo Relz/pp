@@ -1,12 +1,14 @@
 #pragma once
-#include <iostream>
-#include <windows.h>
-#include <vector>
-#include <memory>
-#include "ThreadPool.h"
-#include "RandomHelper.h"
-#include "MathHelper.h"
 #include "DoubleHelper.h"
+#include "MathHelper.h"
+#include "RandomHelper.h"
+#include "ThreadPool.h"
+#include <iostream>
+#include <memory>
+#include <vector>
+#undef min
+#undef max
+#include <windows.h>
 
 using namespace std;
 
@@ -41,8 +43,11 @@ private:
 	double m_piValue;
 
 	unsigned int GetInCirclePointCount() const;
+	unsigned int CalculateInThreads(ThreadPool& threadPool, vector<shared_ptr<PiCalculatorData>>& piCalculatorDataPointers, shared_ptr<unsigned int> const& inCirclePointCount, shared_ptr<ProgressData> const& progressData) const;
 
-	static DWORD WINAPI PrintProgress(CONST LPVOID data);
-	static DWORD WINAPI CalculateInCirclePointCount(CONST LPVOID data);
+	static DWORD WINAPI PrintProgressThreadFunction(CONST LPVOID data);
+	static void PrintProgress(ProgressData* progressData);
+	static DWORD WINAPI CalculateInCirclePointCountThreadFunction(CONST LPVOID data);
+	static void CalculateInCirclePointCount(PiCalculatorData* piCalculatorData);
 	static bool IsPointInCircle(Vector2d const& vect);
 };
