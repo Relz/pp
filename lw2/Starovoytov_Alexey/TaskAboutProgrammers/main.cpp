@@ -28,5 +28,10 @@ int main()
 		gitServer.ObserveTask(programmer->GetTask());
 	}
 
+	for (Programmer * programmer : programmers)
+	{
+		programmer->WakeUp();
+	}
+
 	return 0;
 }
