@@ -15,9 +15,26 @@ void GitServer::ObserveTask(Task * task)
 			}
 		},
 		true);
+	task->DoOnApprovedChange([this, task](bool isApproved) {
+		if (isApproved)
+		{
+			m_approvedTasks.emplace(task);
+		}
+		else
+		{
+			m_approvedTasks.erase(task);
+		}
+	});
 }
 
-Task * GitServer::GetDoneTask() const
+Task * GitServer::GetWaitingForReviewTaskExcept(Task * exceptTask) const
 {
-	return m_doneTasks.empty() ? nullptr : *m_doneTasks.begin();
+	for (auto & it = m_doneTasks.begin(); it != m_doneTasks.end(); ++it)
+	{
+		if (*it != exceptTask && m_approvedTasks.find(*it) == m_approvedTasks.end())
+		{
+			return *it;
+		}
+	}
+	return nullptr;
 }
