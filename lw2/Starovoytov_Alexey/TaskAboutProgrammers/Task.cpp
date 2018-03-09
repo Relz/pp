@@ -24,7 +24,7 @@ boost::signals2::connection Task::DoOnDoneChange(
 {
 	if (doAction)
 	{
-		slot;
+		slot(m_isDone);
 	}
 	return m_doneChangeSignal.connect(slot);
 }

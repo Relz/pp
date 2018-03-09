@@ -1,8 +1,13 @@
 #include "Programmer.h"
 
-Programmer::Programmer()
+Programmer::Programmer(unsigned int id)
+	: m_id(id)
+	, m_task(new Task(this))
+{}
+
+Task * Programmer::GetTask() const
 {
-	m_task = new Task(this);
+	return m_task;
 }
 
 void Programmer::Sleep()

@@ -7,11 +7,11 @@ void GitServer::ObserveTask(Task * task)
 		[this, task](bool isDone) {
 			if (isDone)
 			{
-				m_tasks.emplace(task);
+				m_doneTasks.emplace(task);
 			}
 			else
 			{
-				m_tasks.erase(task);
+				m_doneTasks.erase(task);
 			}
 		},
 		true);

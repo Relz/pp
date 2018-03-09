@@ -5,11 +5,13 @@
 class Programmer
 {
 public:
-	Programmer();
+	Programmer(unsigned int id);
+	Task * GetTask() const;
 	void Sleep();
 	void WakeUp();
 
 private:
+	unsigned int m_id;
 	bool m_sleep = true;
 	Task * m_task;
 };
