@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CriticalSectionHelper.h"
 #include "GitServer.h"
 #include "Logger.h"
 #include "RandomHelper.h"
@@ -27,6 +28,8 @@ private:
 	Task * m_task;
 
 	static DWORD WINAPI Activity(LPVOID CONST data);
+	static void DoTask(std::string const & programmerIdString, Task * task);
 	static bool HasProgrammerCompletedTask();
+	static void ReviewTask(std::string const & programmerIdString, Task * task);
 	static bool HasProgrammerApprovedPullRequest();
 };

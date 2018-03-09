@@ -34,20 +34,10 @@ DWORD Programmer::Activity(LPVOID CONST data)
 	std::string const programmerIdString = std::to_string(task->GetAssignee()->GetId());
 	while (true)
 	{
+		CriticalSectionHelper::GetInstance()->Enter();
 		if (!task->IsDone())
 		{
-			std::string message = programmerIdString + " ";
-			if (HasProgrammerCompletedTask())
-			{
-				task->SetDone(true);
-				message += "has completed task";
-			}
-			else
-			{
-				message += "is still doing his task";
-			}
-			message += "\n";
-			Logger::GetInstance()->Print(message);
+			DoTask(programmerIdString, task);
 		}
 		if (task->IsDone())
 		{
@@ -56,28 +46,53 @@ DWORD Programmer::Activity(LPVOID CONST data)
 			{
 				Logger::GetInstance()->Print(programmerIdString + " is sleeping\n");
 			}
-			else if (HasProgrammerApprovedPullRequest())
-			{
-				std::string const pullRequestAssigneeId = std::to_string(anotherDoneTask->GetAssignee()->GetId());
-				Logger::GetInstance()->Print(
-					programmerIdString + " has approved " + pullRequestAssigneeId + "'s pull request\n");
-				anotherDoneTask->SetApproved(true);
-			}
 			else
 			{
-				std::string const pullRequestAssigneeId = std::to_string(anotherDoneTask->GetAssignee()->GetId());
-				Logger::GetInstance()->Print(
-					programmerIdString + " requests changes for " + pullRequestAssigneeId + "'s pull request\n");
-				anotherDoneTask->SetDone(false);
+				ReviewTask(programmerIdString, anotherDoneTask);
 			}
 		}
+		CriticalSectionHelper::GetInstance()->Leave();
 		Sleep(1000);
 	}
+}
+
+void Programmer::DoTask(std::string const & programmerIdString, Task * task)
+{
+	std::string message = programmerIdString + " ";
+	if (HasProgrammerCompletedTask())
+	{
+		task->SetDone(true);
+		message += "has completed task";
+	}
+	else
+	{
+		message += "is still doing his task";
+	}
+	message += "\n";
+	Logger::GetInstance()->Print(message);
 }
 
 bool Programmer::HasProgrammerCompletedTask()
 {
 	return RandomHelper::GetInstance()->GetRandomInteger(0, 5, GetCurrentThreadId()) == 0;
+}
+
+void Programmer::ReviewTask(std::string const & programmerIdString, Task * task)
+{
+	if (HasProgrammerApprovedPullRequest())
+	{
+		std::string const pullRequestAssigneeId = std::to_string(task->GetAssignee()->GetId());
+		Logger::GetInstance()->Print(
+			programmerIdString + " has approved " + pullRequestAssigneeId + "'s pull request\n");
+		task->SetApproved(true);
+	}
+	else
+	{
+		std::string const pullRequestAssigneeId = std::to_string(task->GetAssignee()->GetId());
+		Logger::GetInstance()->Print(
+			programmerIdString + " requests changes for " + pullRequestAssigneeId + "'s pull request\n");
+		task->SetDone(false);
+	}
 }
 
 bool Programmer::HasProgrammerApprovedPullRequest()
