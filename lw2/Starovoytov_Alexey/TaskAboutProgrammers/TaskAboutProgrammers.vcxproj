@@ -111,11 +111,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GitServer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Programmer.cpp" />
     <ClCompile Include="Task.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GitServer.h" />
     <ClInclude Include="Programmer.h" />
     <ClInclude Include="Task.h" />
   </ItemGroup>
