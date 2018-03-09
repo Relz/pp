@@ -1,8 +1,8 @@
 #pragma once
 
+#include "CriticalSectionHelper.h"
 #include <iostream>
 #include <string>
-#include <windows.h>
 
 class Logger
 {
@@ -12,7 +12,6 @@ public:
 
 private:
 	static Logger * m_instance;
-	CRITICAL_SECTION m_criticalSection;
 
-	explicit Logger();
+	explicit Logger() = default;
 };

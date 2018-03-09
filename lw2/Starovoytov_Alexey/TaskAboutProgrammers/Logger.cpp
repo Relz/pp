@@ -11,14 +11,9 @@ Logger * Logger::GetInstance()
 
 void Logger::Print(std::string const & string)
 {
-	EnterCriticalSection(&m_criticalSection);
+	CriticalSectionHelper::GetInstance()->Enter();
 	std::cout << string;
-	LeaveCriticalSection(&m_criticalSection);
+	CriticalSectionHelper::GetInstance()->Leave();
 }
 
 Logger * Logger::m_instance = nullptr;
-
-Logger::Logger()
-{
-	InitializeCriticalSection(&m_criticalSection);
-}
