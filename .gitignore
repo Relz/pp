@@ -1,0 +1,9 @@
+# User-specific files
+*.user
+
+# Build results
+Debug/
+Release/
+
+# Cache/options directory
+.vs/
