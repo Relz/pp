@@ -6,6 +6,7 @@ class CriticalSectionHelper
 {
 public:
 	static CriticalSectionHelper * GetInstance();
+	~CriticalSectionHelper();
 	void Enter();
 	void Leave();
 
